@@ -11,16 +11,32 @@ export const getAllUser = async (_req, res) => {
 
 export const getUserById = async (req, res) => {
     try {
-        const user = await User.findById(req.params.userId).populate('thoughts').populate('friends');
-        if (user) {
-            res.json(user);
-        } else {
-            res.status(404).json({ message: 'User not found' });
-        }
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+      const user = await User.findById(req.params.userId)
+        .populate('thoughts')
+        .populate('friends');
+  
+      if (!user) {
+        return res.status(404).json({ message: 'No user found with that ID' });
+      }
+  
+      res.json(user);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Something went wrong', error: err.message });
     }
-};
+  };
+
+export const getUserThoughts = async (req, res) => {
+   try {
+      const user = await User.findById(req.params.userId).populate('thoughts');
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.json(user.thoughts);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };
 
 export const createUser = async (req, res) => {
     try {

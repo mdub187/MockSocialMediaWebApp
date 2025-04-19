@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const db = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/studentsDB', {
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/NOSQL', {
     });
 
     mongoose.connection.on('error', (err) => {

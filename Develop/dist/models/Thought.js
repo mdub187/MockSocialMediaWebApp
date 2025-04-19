@@ -1,54 +1,43 @@
-import { Schema, model, Types } from 'mongoose';
+import mongoose from 'mongoose';
+const { Schema, model, Types } = mongoose;
 
-const reactionSchema = new Schema({
-  reactionId: {
-    type: Schema.Types.ObjectId,
-    default: () => new Types.ObjectId()
+const thoughtSchema = new Schema(
+  {
+    thoughtText: {
+      type: String,
+      required: true,
+      minlength: 1,
+      maxlength: 280,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    userId: {
+      type: Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    reactions: [
+      {
+        reactionBody: { type: String },
+        username: { type: String },
+        createdAt: { type: Date, default: Date.now }
+      }
+    ]
   },
-  reactionBody: {
-    type: String,
-    required: true,
-    maxLength: 280
-  },
-  username: {
-    type: String,
-    required: true
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    get: timestamp => new Date(timestamp).toLocaleString()
+  {
+    toJSON: {
+      virtuals: true,
+    },
+    id: false,
   }
-}, {
-  toJSON: { getters: true },
-  id: false
-});
+);
 
-const thoughtSchema = new Schema({
-  thoughtText: {
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 500
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    get: timestamp => new Date(timestamp).toLocaleString()
-  },
-  username: {
-    type: String,
-    required: true
-  },
-  reactions: [reactionSchema]
-}, {
-  toJSON: { virtuals: true, getters: true },
-  id: false
-});
-
-thoughtSchema.virtual('reactionCount').get(function () {
-  return this.reactions.length;
-});
 
 const Thought = model('Thought', thoughtSchema);
 export default Thought;
