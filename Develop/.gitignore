@@ -1,8 +1,29 @@
+# 🔐 Sensitive config
 .env
+
+# 📦 Node dependencies
+node_modules/
+
+# 📋 Package lock
 package-lock.json
-package.json
-DS_Store
-.o
-node_modules
-.log
+
+# 💾 System files
+.DS_Store
+Thumbs.db
+
+# 🧪 Test output
 test/
+coverage/
+
+# 🗂 Compiled output (if applicable)
+#dist/
+
+# 🛠 OS or IDE cruft
+*.log
+*.o
+*.out
+*.class
+
+# 🧠 Editor stuff
+.vscode/
+.idea/
